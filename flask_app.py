@@ -26,20 +26,16 @@ SHOW_DIALOG = True
 @app.route("/",methods=['POST', 'GET'])
 def check():
     try:
-        global logo
-        print(logo)
+        print(session['logo'])
+        token = session["toke"]
     except:
-        logo = 0
-    print("LOGO STATUS: LOGO: ", logo)
-    #try:
+        print("logo not found")
+        session['logo'] = 0
+    print("LOGO STATUS: LOGO: ", session['logo'])
 
-    #    token = session["toke"]
-    #except:
-    #    logo = 0
-
-    if (logo == 0):
+    if (session['logo'] == 0):
         return render_template("home.html", loggedin = 0)
-    if (logo == 1):
+    if (session['logo'] == 1):
 
         token = session["toke"]
         sp = spotipy.Spotify(auth=token)
@@ -393,17 +389,15 @@ def check():
 def verify():
 
     auth_url = f'{API_BASE}/authorize?client_id={client_id}&response_type=code&redirect_uri={redirect_uri}&scope={scope}&show_dialog={SHOW_DIALOG}'
-    global logo
-    logo = 1
+    session['logo'] = 1
     return redirect(auth_url)
 
 
 @app.route("/api_callback")
 def api_callback():
     session.clear()
-    global logo
-    logo = 1
-    print("logo SWITCHED ", logo)
+    session['logo'] = 1
+    print("logo SWITCHED ", session['logo'])
     code = request.args.get('code')
 
     auth_token_url = f"{API_BASE}/api/token"
@@ -424,6 +418,5 @@ def api_callback():
 
 @app.route("/logout")
 def logout():
-    global logo
-    logo = 0
+    session['logo'] = 0
     return redirect("/")
