@@ -14,13 +14,11 @@ from io import BytesIO
 from flask import Flask, render_template, redirect, request,session
 app = Flask(__name__)
 
-app.secret_key = '02ac351eecbc4a83982e1309d0c9e683'
+
 username = ''
 scope = 'user-read-recently-played, user-top-read'
 redirect_uri = "https://marcow125.pythonanywhere.com/api_callback"
 API_BASE = 'https://accounts.spotify.com'
-client_id = 'f5ee56f23f5d4bb5b2d579703a097ae1'
-client_secret = '02ac351eecbc4a83982e1309d0c9e683'
 SHOW_DIALOG = True
 
 @app.route("/",methods=['POST', 'GET'])
